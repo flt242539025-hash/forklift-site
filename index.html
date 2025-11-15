@@ -382,11 +382,10 @@
       <h2>会社概要</h2>
       <dl>
         <!-- ★ここを実際の会社情報に書き換えてください -->
-        <dt>会社名</dt><dd>有限会社　セルバス　フォークリフト事業部E-Lift</dd>
-        <dt>所在地</dt><dd>埼玉県さいたま市岩槻区飯塚336-3</dd>
-        <dt>電話番号</dt><dd>048-628-2624</dd>
-        <dt>FAX</dt><dd>048-717-3013</dd>
-        <dt>メール</dt><dd>e1fork@yahoo.co.jp</dd>
+        <dt>会社名</dt><dd>きさらぎフォークリフト販売（例）</dd>
+        <dt>所在地</dt><dd>埼玉県○○市△△町1-2-3（例）</dd>
+        <dt>電話番号</dt><dd>00-0000-0000</dd>
+        <dt>メール</dt><dd>info@example.com</dd>
         <dt>営業時間</dt><dd>平日 9:00〜18:00（土日祝休）</dd>
         <dt>事業内容</dt><dd>中古フォークリフトの販売・買取・整備・特定自主検査</dd>
         <dt>古物商許可</dt><dd>○○県公安委員会 第000000000号（例）</dd>
@@ -456,36 +455,49 @@
       { maker:"MITSUBISHI", model:"FD40N-050", ton:4.0, hours:3600, year:2016, price:1380000, img:"img/mitsubishi.jpg" }
     ];
 
+    function render(list) {
+      const wrap = document.getElementById("list");
+      const count = document.getElementById("count");
+      wrap.innerHTML = "";
+      count.textContent = list.length + " 件ヒット";
 
+      if (list.length === 0) {
+        wrap.innerHTML = "<p>条件に合う在庫がありませんでした。</p>";
+        return;
+      }
+
+      list.forEach(item => {
+        const mailSubject = encodeURIComponent("フォークリフト「" + item.maker + " " + item.model + "」について");
+        const mailBody = encodeURIComponent(
+          "以下のフォークリフトについて問い合わせます。\n\n" +
+          "メーカー: " + item.maker + "\n" +
+          "型式: " + item.model + "\n" +
+          "トン数: " + item.ton + "t\n" +
+          "アワー: " + item.hours + "h\n" +
+          "年式: " + item.year + "年\n\n" +
+          "【お客様情報】\n会社名：\nお名前：\n電話番号：\nご質問内容：\n"
+        );
+        // ★ここも実際のメールアドレスに変更してください
+        const mailtoLink = "mailto:info@example.com?subject=" + mailSubject + "&body=" + mailBody;
+
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <img class="thumb" src="${item.img}" alt="${item.maker} ${item.model}">
+          <h3>${item.maker} ${item.model}</h3>
+          <div class="meta">
+            トン数：${item.ton}t<br>
+            アワー：${item.hours.toLocaleString()} h<br>
+            年式：${item.year}年
+          </div>
+          <div class="price">${item.price.toLocaleString()} 円</div>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="${mailtoLink}">この車両に問い合わせる</a>
+          </div>
+        `;
+        wrap.appendChild(div);
       });
-    }function render(list) {
-  const wrap = document.getElementById("list");
-  const count = document.getElementById("count");
-  wrap.innerHTML = "";
-  count.textContent = list.length + " 件ヒット";
-
-  if (list.length === 0) {
-    wrap.innerHTML = "<p>条件に合う在庫がありませんでした。</p>";
-    return;
-  }
-
-  list.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = `
-      <img class="thumb" src="${item.img}" alt="${item.maker} ${item.model}">
-      <h3>${item.maker} ${item.model}</h3>
-      <div class="meta">
-        トン数：${item.ton}t<br>
-        アワー：${item.hours.toLocaleString()} h<br>
-        年式：${item.year}年
-      </div>
-      <div class="price">${item.price.toLocaleString()} 円</div>
-    `;
-    wrap.appendChild(div);
-  });
-}
-
+    }
 
     function search() {
       const maker = document.getElementById("maker").value;
