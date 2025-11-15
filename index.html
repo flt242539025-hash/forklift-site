@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>中古フォークリフト在庫一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 16px;
+      background: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .search-panel {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #fff;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    }
+    .search-item {
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+      min-width: 130px;
+      flex: 1;
+    }
+    .search-item label {
+      margin-bottom: 2px;
+      color: #555;
+    }
+    .search-item input,
+    .search-item select {
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 13px;
+    }
+    #searchBtn {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: #0070c9;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+    #searchBtn:hover { opacity: .9; }
+    #count {
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    .list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      font-size: 13px;
+    }
+    .card h3 {
+      margin: 4px 0 6px;
+      font-size: 14px;
+    }
+    .card .meta {
+      color: #555;
+      margin-bottom: 4px;
+    }
+    .card .price {
+      color: #c0392b;
+      font-weight: 700;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>中古フォークリフト在庫一覧</h1>
+
+  <section class="search-panel">
+    <div class="search-item">
+      <label>メーカー</label>
+      <select id="maker">
+        <option value="">すべて</option>
+        <option value="TOYOTA">TOYOTA</option>
+        <option value="KOMATSU">KOMATSU</option>
+        <option value="NICHIYU">NICHIYU</option>
+      </select>
+    </div>
+
+    <div class="search-item">
+      <label>トン数 (min)</label>
+      <input type="number" id="tonMin" step="0.1" placeholder="例：1.0">
+    </div>
+
+    <div class="search-item">
+      <label>トン数 (max)</label>
+      <input type="number" id="tonMax" step="0.1" placeholder="例：3.5">
+    </div>
+
+    <div class="search-item">
+      <label>アワー最大</label>
+      <input type="number" id="hoursMax" placeholder="例：3000">
+    </div>
+
+    <div class="search-item">
+      <label>年式 (min)</label>
+      <input type="number" id="yearMin" placeholder="例：2015">
+    </div>
+
+    <div class="search-item">
+      <label>年式 (max)</label>
+      <input type="number" id="yearMax" placeholder="例：2023">
+    </div>
+
+    <button id="searchBtn">検索</button>
+  </section>
+
+  <p id="count"></p>
+  <div id="list" class="list"></div>
+
+  <script>
+    // --- 在庫データをここに追加していく ---
+    const forklifts = [
+      {
+        maker: "TOYOTA",
+        model: "8FGL15",
+        ton: 1.5,
+        hours: 2300,
+        year: 2018,
+        price: 880000
+      },
+      {
+        maker: "KOMATSU",
+        model: "FD25-16",
+        ton: 2.5,
+        hours: 4200,
+        year: 2013,
+        price: 780000
+      },
+      {
+        maker: "NICHIYU",
+        model: "FB15-80",
+        ton: 1.5,
+        hours: 1500,
+        year: 2020,
+        price: 1100000
+      }
+    ];
+
+    function render(list) {
+      const wrap = document.getElementById("list");
+      const count = document.getElementById("count");
+      wrap.innerHTML = "";
+      count.textContent = list.length + " 件ヒット";
+
+      if (list.length === 0) {
+        wrap.innerHTML = "<p>条件に合う在庫がありませんでした。</p>";
+        return;
+      }
+
+      list.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <h3>${item.maker} ${item.model}</h3>
+          <div class="meta">
+            トン数：${item.ton}t<br>
+            アワー：${item.hours.toLocaleString()} h<br>
+            年式：${item.year}年
+          </div>
+          <div class="price">${item.price.toLocaleString()} 円</div>
+        `;
+        wrap.appendChild(div);
+      });
+    }
+
+    function search() {
+      const maker = document.getElementById("maker").value;
+      const tonMin = parseFloat(document.getElementById("tonMin").value);
+      const tonMax = parseFloat(document.getElementById("tonMax").value);
+      const hoursMax = parseFloat(document.getElementById("hoursMax").value);
+      const yearMin = parseFloat(document.getElementById("yearMin").value);
+      const yearMax = parseFloat(document.getElementById("yearMax").value);
+
+      const result = forklifts.filter(f => {
+        if (maker && f.maker !== maker) return false;
+        if (!isNaN(tonMin) && f.ton < tonMin) return false;
+        if (!isNaN(tonMax) && f.ton > tonMax) return false;
+        if (!isNaN(hoursMax) && f.hours > hoursMax) return false;
+        if (!isNaN(yearMin) && f.year < yearMin) return false;
+        if (!isNaN(yearMax) && f.year > yearMax) return false;
+        return true;
+      });
+
+      render(result);
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", search);
+
+    // 初期表示
+    render(forklifts);
+  </script>
+</body>
+</html>
