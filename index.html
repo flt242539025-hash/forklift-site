@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>中古フォークリフト在庫一覧</title>
+  <title>中古フォークリフト在庫一覧 | フォークリフトのアウトレット</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
@@ -15,15 +15,11 @@
       margin: 0 auto;
       padding: 0 16px 32px;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    /* ヒーロー（トップ画像＋キャッチ） */
+    /* ヒーロー（トップ部分） */
     .hero {
       background: #222;
       color: #fff;
-      padding: 24px 16px;
+      padding: 24px 16px 28px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -32,17 +28,22 @@
     }
     .hero-text {
       flex: 1 1 260px;
-      max-width: 480px;
+      max-width: 520px;
     }
     .hero-text h1 {
-      text-align: left;
       margin: 0 0 8px;
-      font-size: 22px;
+      font-size: 24px;
     }
     .hero-text p {
       margin: 4px 0;
       font-size: 14px;
       line-height: 1.6;
+    }
+    .hero-buttons {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .hero-img-wrap {
       flex: 0 0 260px;
@@ -55,7 +56,34 @@
       object-fit: cover;
       max-height: 200px;
     }
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      font-size: 13px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #e67e22;
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #444;
+      color: #fff;
+    }
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      opacity: 0.9;
+    }
 
+    /* 検索パネル */
+    .section-title {
+      margin: 20px 0 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
     .search-panel {
       display: flex;
       flex-wrap: wrap;
@@ -63,7 +91,7 @@
       background: #fff;
       padding: 12px;
       border-radius: 10px;
-      margin: 16px 0;
+      margin-bottom: 16px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.06);
     }
     .search-item {
@@ -100,6 +128,8 @@
       font-size: 13px;
       margin-bottom: 8px;
     }
+
+    /* 一覧カード */
     .list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -140,23 +170,8 @@
       display: flex;
       justify-content: flex-end;
     }
-    .btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 12px;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn-primary {
-      background: #e67e22;
-      color: #fff;
-    }
-    .btn-primary:hover {
-      opacity: 0.9;
-    }
 
+    /* お問い合わせブロック */
     .contact-block {
       margin: 24px 0;
       text-align: center;
@@ -170,6 +185,26 @@
       margin: 4px 0 12px;
     }
 
+    /* サービス・特定自主検査など */
+    .section-box {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .section-box h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+    .section-box ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    /* 会社概要 */
     .company {
       margin-top: 24px;
       padding: 16px;
@@ -184,7 +219,7 @@
     }
     .company dl {
       display: grid;
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 110px 1fr;
       row-gap: 4px;
     }
     .company dt {
@@ -196,7 +231,7 @@
 
     @media (max-width: 600px) {
       .hero-text h1 {
-        font-size: 18px;
+        font-size: 20px;
       }
       .hero-text p {
         font-size: 13px;
@@ -208,18 +243,23 @@
   <!-- トップ画像＋キャッチコピー -->
   <header class="hero">
     <div class="hero-text">
-      <h1>フォークリフトのアウトレット 在庫一覧</h1>
-      <p>全て専属の整備士が整備した中古フォークリフトのみを販売しています。</p>
-      <p>安全・安心にお使いいただける車両を、メーカー別・年式・アワー・トン数から絞り込みできます。</p>
+      <h1>「フォークリフト」のアウトレット</h1>
+      <p>全て専属の整備士が整備したものです。ご安心ください。</p>
+      <p>中古フォークリフト専門店として、販売・買取・特定自主検査・修理・レンタルまでワンストップで対応いたします。</p>
+      <div class="hero-buttons">
+        <a href="#search" class="btn btn-primary">在庫をさがす</a>
+        <a href="#contact" class="btn btn-secondary">お問い合わせへ</a>
+      </div>
     </div>
     <div class="hero-img-wrap">
-      <!-- トップ画像（トヨタ車の写真など） -->
+      <!-- トップ画像：トヨタ車を想定（img/toyota.jpg をアップしておいてください） -->
       <img src="img/toyota.jpg" alt="フォークリフトのアウトレット">
     </div>
   </header>
 
   <main class="wrapper">
     <!-- 検索フィルター -->
+    <h2 id="search" class="section-title">在庫検索</h2>
     <section class="search-panel">
       <!-- メーカー -->
       <div class="search-item">
@@ -273,24 +313,83 @@
     <div id="list" class="list"></div>
 
     <!-- 共通のお問い合わせブロック -->
-    <section class="contact-block">
+    <section id="contact" class="contact-block">
       <p>気になるフォークリフトがありましたら、型式・年式・アワーを明記のうえお問い合わせください。</p>
+      <!-- ★メールアドレスを実際のものに変更してください -->
       <a class="btn btn-primary" href="mailto:info@example.com?subject=%E3%83%95%E3%82%A9%E3%83%BC%E3%82%AF%E3%83%AA%E3%83%95%E3%83%88%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B">
         お問い合わせはこちら
       </a>
       <p style="margin-top:8px;font-size:12px;color:#777;">※メールソフトが開きます。フォームにお名前・ご連絡先をご記入ください。</p>
+      <p style="margin-top:4px;font-size:13px;">お電話でのお問い合わせ：<strong>00-0000-0000</strong>（平日 9:00〜18:00）</p>
+    </section>
+
+    <!-- サービス内容（Crayonサイトの内容を要約） -->
+    <section class="section-box">
+      <h2>サービス内容</h2>
+      <p>中古フォークリフトの販売だけでなく、長く安心してお使いいただくためのトータルサポートを行っています。</p>
+      <ul>
+        <li>中古フォークリフトの販売・買取</li>
+        <li>特定自主検査・年次検査・定期点検の実施</li>
+        <li>サービスカーによる出張点検・出張修理</li>
+        <li>レンタル・リースのご提案</li>
+        <li>タイヤ（ノーパンク・エアータイヤ）・サヤフォークの販売</li>
+        <li>純正・社外・再生バッテリーの販売・交換</li>
+      </ul>
+    </section>
+
+    <!-- 特定自主検査の説明 -->
+    <section class="section-box">
+      <h2>特定自主検査について</h2>
+      <p>フォークリフトは労働安全衛生法に基づき、1年に1回の「特定自主検査」が義務付けられています。当社では、経験豊富な整備士が法令に則った検査を行い、安全にご使用いただける状態かどうかを丁寧にチェックします。</p>
+      <ul>
+        <li>各部の摩耗・損傷・油漏れなどを細かく点検</li>
+        <li>必要な部品交換・調整のご提案</li>
+        <li>検査結果は点検表としてお渡し</li>
+        <li>ご予算に合わせた修理・整備プランのご提案も可能</li>
+      </ul>
+      <p>「検査の時期が分からない」「前回どこでやったか不明」といった場合もお気軽にご相談ください。</p>
+    </section>
+
+    <!-- 点検・整備のこだわり -->
+    <section class="section-box">
+      <h2>中古車販売時の点検・整備</h2>
+      <p>アウトレット価格でも、安心して長くお使いいただくために、販売前には以下の項目を中心に点検・整備を行っています。</p>
+      <ul>
+        <li>エンジン・ミッション・油圧系統の点検とオイル漏れチェック</li>
+        <li>マスト・チェーン・フォークの摩耗・変形確認</li>
+        <li>タイヤ状態の確認と必要に応じた交換</li>
+        <li>バッテリー比重・充電状態の確認</li>
+        <li>外装の清掃・部分塗装（ご要望に応じて全塗装）</li>
+      </ul>
+      <p>現場の使用環境やご予算に合わせて、最適な1台をご提案いたします。</p>
+    </section>
+
+    <!-- 対応メーカーなど -->
+    <section class="section-box">
+      <h2>対応メーカー・こんなご相談もお任せください</h2>
+      <p><strong>対応メーカー例：</strong>トヨタ・コマツ・三菱・日産・住友・TCM・ニチユ（ロジスネクスト） など</p>
+      <ul>
+        <li>「今のフォークリフトを入れ替えたいが、予算を抑えたい」</li>
+        <li>「現場に合ったトン数やマスト高が分からない」</li>
+        <li>「急にフォークリフトが必要になったのでレンタルしたい」</li>
+        <li>「タイヤやバッテリーだけ安く交換したい」</li>
+      </ul>
+      <p>現場の状況をお伺いし、最適な車両・整備・点検プランをご提案します。</p>
     </section>
 
     <!-- 会社概要 -->
     <footer class="company">
       <h2>会社概要</h2>
       <dl>
+        <!-- ★ここを実際の会社情報に書き換えてください -->
         <dt>会社名</dt><dd>きさらぎフォークリフト販売（例）</dd>
-        <dt>所在地</dt><dd>埼玉県○○市△△町1-2-3</dd>
+        <dt>所在地</dt><dd>埼玉県○○市△△町1-2-3（例）</dd>
         <dt>電話番号</dt><dd>00-0000-0000</dd>
+        <dt>メール</dt><dd>info@example.com</dd>
         <dt>営業時間</dt><dd>平日 9:00〜18:00（土日祝休）</dd>
-        <dt>事業内容</dt><dd>中古フォークリフトの販売・買取・整備</dd>
-        <dt>古物商許可</dt><dd>埼玉県公安委員会 第000000000号（例）</dd>
+        <dt>事業内容</dt><dd>中古フォークリフトの販売・買取・整備・特定自主検査</dd>
+        <dt>古物商許可</dt><dd>○○県公安委員会 第000000000号（例）</dd>
+        <dt>Webサイト</dt><dd><a href="https://elift.crayonsite.info/" style="color:#fff;text-decoration:underline;">既存HPはこちら</a></dd>
       </dl>
     </footer>
   </main>
@@ -378,6 +477,7 @@
           "年式: " + item.year + "年\n\n" +
           "【お客様情報】\n会社名：\nお名前：\n電話番号：\nご質問内容：\n"
         );
+        // ★ここも実際のメールアドレスに変更してください
         const mailtoLink = "mailto:info@example.com?subject=" + mailSubject + "&body=" + mailBody;
 
         const div = document.createElement("div");
